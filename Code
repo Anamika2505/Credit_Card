@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+certi=pd.read_csv("E:\Edulyt Projects\Proj 1\certification.csv",index_col=0)
+certi.head()
+spend=pd.read_csv("E:\Edulyt Projects\Proj 1\spend.csv",index_col=0)
+spend.head()
+repayment=pd.read_csv(r"E:\Edulyt Projects\Proj 1\repayment.csv",index_col=0)
+repayment.head()
+spend.groupby(['Customer','Year','Monthh']).sum()['Spend Amount']
+repayment.groupby(['Customer','Year','Monthh']).sum()['Repayment Amount']
+certi.sort_values(by=['ReptAmt']).tail(10)[['Customer','ReptAmt']][::-1]
+certi.groupby('Segment')[['Segment','SpendAmt']].sum().sort_values(by=['SpendAmt'])[::-1].head(1)
+certi.groupby('AgeGrp')[['AgeGrp','SpendAmt']].sum().sort_values(by=['SpendAmt'])[::-1].head(1)
+mt1=pd.read_csv('mt1.csv')
+mt1.head()certi.groupby('City')[['City','SpendAmt']].sum().sort_values(by=['SpendAmt'])[::-1].head(1)
+certi.groupcommon_table2=pd.merge(certi,repayment,on='Customer',how='outer')
+common_table2.head()by('Credit Card Product')[['Credit Card Product','SpendAmt']].sum().sort_values(by=['SpendAmt'])[::-1].head(1)
+certi.groupby('Company')[['Company','SpendAmt']].sum().sort_values(by=['SpendAmt'])[::-1].head(1)
+spend.groupby('Type')[['Type','Spend Amount']].sum().sort_values(by=['Spend Amount'],ascending=False).head(1)
+common_table=pd.merge(certi,spend,on='Customer',how='outer')
+common_table.head()
+comonS=common_table.groupby(['Customer','Limit','Segment','Year','Monthh']).sum()['Spend Amount']
+comonS.head()
+common_table=pd.merge(certi,spend,on='Customer',how='outer')
+common_table.head()
+common_table2=pd.merge(certi,repayment,on='Customer',how='outer')
+common_table2.head()
+comonR=common_table2.groupby(['Customer','Limit','Segment','Year','Monthh']).sum()['Repayment Amount']
+comonR.head()
+main_c_table1=pd.merge(comonS,comonR,on=['Customer','Year','Monthh','Limit','Segment'],how='outer')
+main_c_table1.head()
+main_c_table1.to_csv('mt1')
+mt1.fillna(0,inplace=True)
+def Action(r,s,l):
+    if r>s:
+        return -0.02*l
+    else:
+        return 0.029*(s-r)
+mt1['Profit']=mt1.apply(lambda x:Action(x['Repayment Amount'],x['Spend Amount'],x['Limit']),axis=1)
+mt1.head()
+Seg_Prof=mt1.groupby('Segment').sum()['Profit']
+Seg_Prof[Seg_Prof==Seg_Prof.max()]
+mt1.groupby(['Year','Monthh']).sum()['Profit']
+
+
